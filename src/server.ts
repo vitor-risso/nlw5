@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import './database'
+import './database/index'
 
 const app = express()
 
