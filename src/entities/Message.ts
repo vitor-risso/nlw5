@@ -16,6 +16,9 @@ class Message {
 
   @JoinColumn({ name: "user_id" })
   @ManyToOne(() => User)
+  user:User;
+
+  @Column()
   user_id: string;
 
   @CreateDateColumn()

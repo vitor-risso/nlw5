@@ -1,4 +1,5 @@
-import { getCustomRepository } from "typeorm"
+import { getCustomRepository, Repository } from "typeorm"
+import { User } from "../entities/User"
 import { UsersRepository } from "../repositories/UsersRepository"
 
 
@@ -7,19 +8,22 @@ interface IUserCreate {
 }
 
 class UserService {
+  private userRespository: Repository<User>
+  
+  constructor(){
+    this.userRespository = getCustomRepository(UsersRepository)
+  }
 
   async create({ email }: IUserCreate) {
-    const userRespository = getCustomRepository(UsersRepository)
-
-    const userExists = await userRespository.findOne({ email })
+    const userExists = await this.userRespository.findOne({ email })
 
     if (userExists) {
       return userExists
     }
     
-    const user = userRespository.create({ email })
+    const user = this.userRespository.create({ email })
 
-    await userRespository.save(user)
+    await this.userRespository.save(user)
 
     return user
   }
