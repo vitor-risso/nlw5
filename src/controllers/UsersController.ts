@@ -11,7 +11,6 @@ class UsersController {
     const user = await userService.create({ email })
 
     return res.status(201).json({ user })
-
   }
 }
 
