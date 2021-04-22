@@ -1,5 +1,6 @@
 import { getCustomRepository, Repository } from "typeorm"
 import { Connection } from "../entities/Connection"
+import { User } from "../entities/User"
 import { ConnectionsRepository } from "../repositories/ConnectionsRepository"
 
 interface IConnectionService {
@@ -25,6 +26,12 @@ class ConnectionsService {
     })
     await this.connectionRepository.save(connection)
     return connection
+  }
+
+  async findByUserId(id: string) {
+    return await this.connectionRepository.findOne({
+      where: { user_id: id }
+    })
   }
 }
 

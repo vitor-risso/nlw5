@@ -17,7 +17,29 @@ class SettingsController {
     } catch (error) {
       return res.status(400).send({ message: error.message })
     }
+  }
 
+  async findByUsername(req: Request, res: Response) {
+
+    try {
+      const { username } = req.params
+      const service = new SettingsService()
+      const response = await service.findByUsername(username)
+
+      return res.json(response)
+    } catch (error) {
+      res.json({ "message": "deu ruim" })
+    }
+  }
+
+  async update(req: Request, res: Response) {
+    const { username } = req.params
+    const { chat } = req.body
+
+    const service = new SettingsService()
+    const response = await service.update(username, chat)
+
+    res.json(response)
   }
 
 }
