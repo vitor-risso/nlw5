@@ -9,8 +9,8 @@ interface IUserCreate {
 
 class UserService {
   private userRespository: Repository<User>
-  
-  constructor(){
+
+  constructor() {
     this.userRespository = getCustomRepository(UsersRepository)
   }
 
@@ -20,12 +20,16 @@ class UserService {
     if (userExists) {
       return userExists
     }
-    
+
     const user = this.userRespository.create({ email })
 
     await this.userRespository.save(user)
 
     return user
+  }
+
+  async findByEmail(email: string) {
+    return await this.userRespository.findOne({ email })
   }
 }
 
