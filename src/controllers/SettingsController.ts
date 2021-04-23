@@ -39,7 +39,7 @@ class SettingsController {
     const service = new SettingsService()
     const response = await service.update(username, chat)
 
-    res.json(response)
+    return res.json(response)
   }
 
 }

@@ -12,7 +12,7 @@ document.querySelector("#start_chat").addEventListener("click", (event) => {
 
   socket.on('connect', () => {
     const params = {
-      email, 
+      email,
       txt_help
     }
     socket.emit('client_first_acess', params, (call, err) => {
@@ -20,6 +20,26 @@ document.querySelector("#start_chat").addEventListener("click", (event) => {
 
       else {
         console.log(call)
+      }
+    })
+  })
+
+  socket.on("client_list_all_messages", messages => {
+    var template_client = document.getElementById("message-user-template").innerHTML
+    var template_amdmin = document.getElementById("admin-template").innerHTML
+
+    messages.forEach(message => {
+      if (message.admin_id == null) {
+        const rendered = Mustache.render(template_client, {
+          message: message.text,
+          email
+        })
+        document.getElementById("messages").innerHTML += rendered
+      } else {
+        const rendered = Mustache.render(template_amdmin, {
+          message_admin: message.text
+        })
+        document.getElementById("messages").innerHTML += rendered
       }
     })
   })
