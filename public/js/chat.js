@@ -77,7 +77,7 @@ document.querySelector("#send_message_button").addEventListener("click", (event)
   const template = document.getElementById("message-user-template").innerHTML
 
   const rendered = Mustache.render(template, {
-    message: text.value,
+    message: text,
     email: emailUser
   })
 
