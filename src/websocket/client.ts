@@ -8,7 +8,7 @@ io.on("connect", (socket) => {
   const userService = new UserService()
   const messagesService = new MessagesService()
 
-  interface IParams{
+  interface IParams {
     txt_help: string,
     email: string
   }
@@ -50,8 +50,25 @@ io.on("connect", (socket) => {
       user_id: userExistis.id
     })
 
-    const allMessages  = await messagesService.listByUser(userExistis.id)
+    const allMessages = await messagesService.listByUser(userExistis.id)
 
     socket.emit("client_list_all_messages", allMessages)
+  })
+
+  socket.on('client_send_to_admin', async (params) => {
+    const { text, socket_admin_id } = params
+    const socket_id = socket.id
+    const {user_id} = await connectionsService.findBySocketId(socket_id)
+
+    const message = await messagesService.create({
+      admin_id: null, 
+      text,
+      user_id
+    })
+
+    io.to(socket_admin_id).emit("admin_receive_message", {
+      message,
+      socket_id
+    })
   })
 })
